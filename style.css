@@ -1,0 +1,48 @@
+:root {
+    --gradientStart: royalblue;
+    --gradientEnd: RebeccaPurple;
+}
+
+header {
+    text-align: center;
+    background-image: linear-gradient(to right, var(--gradientStart) , var(--gradientEnd));
+}
+
+header h1 {
+    font-size: 50px;
+    color: aliceblue;
+    font-weight: bold;
+}
+
+
+/*The left box */
+.sub-header {
+    font-weight: bold;
+}
+
+.spacing {
+    margin-bottom: 10px;
+}
+
+.breakLine {
+    border: 1px solid black;
+}
+
+/*The right box */
+.info-box-main {
+    border-style: solid;
+    margin-right: 40px;
+}
+
+.sub-sub-header {
+    font-weight: bold;
+}
+
+.card {
+    width: 280px;
+    color:white;
+    margin-right: 40px;
+    margin-bottom: 40px;
+}
+
+
