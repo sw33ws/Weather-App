@@ -10,6 +10,10 @@ This is both my challenge 6 assignment, a quick weather app that tells you the w
 - [Usage](#usage)
 - [Contact](#contact-info)
 
+---
+![](img/WeatherAppPage.png) 
+---
+
 ## Installation
 
 Clone the repo onto your local drive, ```git clone git@github.com:sw33ws/jubilant-memory.git```
