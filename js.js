@@ -6,10 +6,13 @@ var day4 = $("#day4");
 var day5 = $("#day5");
 
 var apiKey = '44541d76d19b2706ab8b90c24f5bbf53';
+var weatherMain = $('weather1');
 var tempMain = $('#temp1');
 var windMain = $('wind1');
 var humidityMain = $('humidity1');
 var uvMain = $('#uv1');
+var lat = "";
+var lon = "";
 
 function cityandtime() {
     var timeNow = moment().format('(M/D/YYYY)'); 
@@ -25,24 +28,24 @@ function cityandtime() {
     var timeNow = moment().add(5, 'days').format('M/D/YYYY'); 
     day5.text(timeNow);
 }
- 
-// getting the info
-function searching() {
-    var searchInput = document.getElementById('search-input');
-    console.log(searchInput.value);
-    var city = searchInput.value;
-    console.log(city);
-    fetchWeather()
-}
-
-// Uncaught ReferenceError: city is not defined came up ever time, so i just defined it here as i couldn't get it too work
-city = 'london';
 
 // weather info for the choosen city
-function fetchWeather() {
+function searching() {
+    var searchInput = document.getElementById('search-input');
+    var city = searchInput.value;
+    console.log(city);
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
-    ).then((response) => response.json())
-    .then((data) => console.log(data));
+    )
+    .then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                console.log(data);
+                var lat = data.coord.lat;
+                var lon = data.coord.lon;
+                console.log(lat, lon);
+            })
+        }
+    })
 }
 
 window.onload = cityandtime;
