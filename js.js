@@ -32,12 +32,12 @@ function preloading() {
             response.json().then(function(data) {
                 console.log(data);
                 localStorage.setItem("city", JSON.stringify(data))
+                cityandtime()
+                loadWeather()
+                loadWeatherFive()
             })
         }
     })
-    cityandtime()
-    loadWeather()
-    loadWeatherFive()
 };
 
 // weather info for the choosen city
@@ -52,11 +52,11 @@ function searching() {
             response.json().then(function(data) {
                 console.log(data);
                 localStorage.setItem("city", JSON.stringify(data))
+                loadWeather()
+                loadWeatherFive()
             })
         }
     })
-        loadWeather()
-        loadWeatherFive()
 };
 
 // actively loading
