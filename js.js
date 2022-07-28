@@ -40,13 +40,20 @@ function searching() {
         if (response.ok) {
             response.json().then(function(data) {
                 console.log(data);
-                var lat = data.coord.lat;
-                var lon = data.coord.lon;
-                console.log(lat, lon);
-                localStorage.setItem(city, JSON.stringify(data))
+                localStorage.setItem("city", JSON.stringify(data))
             })
         }
     })
+    loadWeather()
 };
+
+function loadWeather() {
+    const cityLocal = JSON.parse(localStorage.getItem("city"));
+    document.getElementById("weather1").textContent = cityLocal.weather.icon;
+    document.getElementById("temp1").textContent = cityLocal.main.temp;
+    document.getElementById("wind1").textContent = cityLocal.wind.speed;
+    document.getElementById("humidity1").textContent = cityLocal.main.humidity;
+    document.getElementById("uv1").textContent = cityLocal.wind.speed;
+}
 
 window.onload = cityandtime;
