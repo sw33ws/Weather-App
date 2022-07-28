@@ -82,4 +82,4 @@ function loadWeatherFive() {
        }
     };
 
-window.onload = preloading;
+window.onload = preloading();
