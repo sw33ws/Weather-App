@@ -47,6 +47,6 @@ function searching() {
             })
         }
     })
-}
+};
 
 window.onload = cityandtime;
