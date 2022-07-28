@@ -6,11 +6,11 @@ var day4 = $("#day4");
 var day5 = $("#day5");
 
 var apiKey = '44541d76d19b2706ab8b90c24f5bbf53';
-var weatherMain = $('weather1');
-var tempMain = $('#temp1');
-var windMain = $('wind1');
-var humidityMain = $('humidity1');
-var uvMain = $('#uv1');
+var weatherMain = document.getElementById("weather1");
+var tempMain = document.getElementById("temp1");
+var windMain = document.getElementById("wind1");
+var humidityMain = document.getElementById("humidity1");
+var uvMain = document.getElementById("uv1");
 var lat = "";
 var lon = "";
 
@@ -43,6 +43,7 @@ function searching() {
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
                 console.log(lat, lon);
+                localStorage.setItem(city, JSON.stringify(data))
             })
         }
     })
