@@ -3,17 +3,17 @@ var cityDate = $("#cityDate");
 var apiKey = '44541d76d19b2706ab8b90c24f5bbf53';
 
 function cityandtime() {
-    var timeNow = moment().format('(M/D/YYYY)'); 
+    var timeNow = moment().format('dddd MMMM D YYYY'); 
     cityDate.text(timeNow);
     for (x = 1; x < 6 ; x++) {
-        document.getElementById(`day${x}`).innerHTML = moment().add(`${x}`, 'days').format('M/D/YYYY');
+        document.getElementById(`day${x}`).innerHTML = moment().add(`${x}`, 'days').format('ddd MMM D YYYY');
     }
 }
 
 // preloaded city
 function preloading() {
     var city = "toronto";
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
     )
     .then(function(response) {
         if (response.ok) {
