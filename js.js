@@ -1,25 +1,13 @@
 var cityDate = $("#cityDate");
-var day1 = $("#day1");
-var day2 = $("#day2");
-var day3 = $("#day3");
-var day4 = $("#day4");
-var day5 = $("#day5");
 
 var apiKey = '44541d76d19b2706ab8b90c24f5bbf53';
 
 function cityandtime() {
     var timeNow = moment().format('(M/D/YYYY)'); 
     cityDate.text(timeNow);
-    var timeNow = moment().add(1, 'days').format('M/D/YYYY'); 
-    day1.text(timeNow);
-    var timeNow = moment().add(2, 'days').format('M/D/YYYY'); 
-    day2.text(timeNow);
-    var timeNow = moment().add(3, 'days').format('M/D/YYYY'); 
-    day3.text(timeNow);
-    var timeNow = moment().add(4, 'days').format('M/D/YYYY'); 
-    day4.text(timeNow);
-    var timeNow = moment().add(5, 'days').format('M/D/YYYY'); 
-    day5.text(timeNow);
+    for (x = 1; x < 6 ; x++) {
+        document.getElementById(`day${x}`).innerHTML = moment().add(`${x}`, 'days').format('M/D/YYYY');
+    }
 }
 
 // preloaded city
@@ -33,8 +21,22 @@ function preloading() {
                 console.log(data);
                 localStorage.setItem("city", JSON.stringify(data))
                 cityandtime()
-                loadWeather()
-                loadWeatherFive()
+
+                const cityLocal = JSON.parse(localStorage.getItem("city"));
+                var lat = cityLocal.coord.lat;
+                var lon = cityLocal.coord.lon;
+                console.log(lat, lon);
+                fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=&exclude=alerts,minutely&appid=${apiKey}`)
+                .then(function(response2) {
+                    if (response2.ok) {
+                        response2.json().then(function(data2) {
+                            console.log(data2)
+                            localStorage.setItem("city2", JSON.stringify(data2))
+                            loadWeather()
+                            loadWeatherFive()
+                        })
+                    }
+                })
             })
         }
     })
@@ -52,8 +54,21 @@ function searching() {
             response.json().then(function(data) {
                 console.log(data);
                 localStorage.setItem("city", JSON.stringify(data))
-                loadWeather()
-                loadWeatherFive()
+                const cityLocal = JSON.parse(localStorage.getItem("city"));
+                var lat = cityLocal.coord.lat;
+                var lon = cityLocal.coord.lon;
+                console.log(lat, lon);
+                fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=&exclude=alerts,minutely&appid=${apiKey}`)
+                .then(function(response2) {
+                    if (response2.ok) {
+                        response2.json().then(function(data2) {
+                            console.log(data2)
+                            localStorage.setItem("city2", JSON.stringify(data2))
+                            loadWeather()
+                            loadWeatherFive()
+                        })
+                    }
+                })
             })
         }
     })
@@ -61,24 +76,24 @@ function searching() {
 
 // actively loading
 function loadWeather() {
-    const cityLocal = JSON.parse(localStorage.getItem("city"));
-    let icon = cityLocal.weather[0].icon;
-    document.getElementById("Location").textContent = cityLocal.name;
+    const cityLocal = JSON.parse(localStorage.getItem("city2"));
+    let icon = cityLocal.current.weather[0].icon;
+    document.getElementById("Location").textContent = cityLocal.currentName;
     document.getElementById("weatherLarge").innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@4x.png>`;
-    document.getElementById("tempLarge").textContent = ("temperature " + cityLocal.main.temp + "C");
-    document.getElementById("windLarge").textContent = ("wind speeds " + cityLocal.wind.speed + "KM/h");
-    document.getElementById("humidityLarge").textContent = ("Humidity " + cityLocal.main.humidity + "%");
+    document.getElementById("tempLarge").textContent = ("temperature " + cityLocal.current.temp + "C");
+    document.getElementById("windLarge").textContent = ("wind speeds " + cityLocal.current.wind_speed + "KM/h");
+    document.getElementById("humidityLarge").textContent = ("Humidity " + cityLocal.current.humidity + "%");
 }
 
 // five bottom displays
 function loadWeatherFive() {
-    const cityLocal = JSON.parse(localStorage.getItem("city"));
+    const cityLocal = JSON.parse(localStorage.getItem("city2"));
     for (x = 0; x < 5 ; x++) {
-        let icon = cityLocal.weather[0].icon;
+        let icon = cityLocal.daily[x].weather[0].icon;
         document.getElementById(`${x}weather`).innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@4x.png>`;
-        document.getElementById(`${x}temp`).textContent = ("temperature " + cityLocal.main.temp + "C");
-        document.getElementById(`${x}wind`).textContent = ("wind speeds " + cityLocal.wind.speed + "KM/h");
-        document.getElementById(`${x}hum`).textContent = ("Humidity " + cityLocal.main.humidity + "%");
+        document.getElementById(`${x}temp`).textContent = ("temperature " + cityLocal.daily[x].temp.day + "C");
+        document.getElementById(`${x}wind`).textContent = ("wind speeds " + cityLocal.daily[x].wind_speed + "KM/h");
+        document.getElementById(`${x}hum`).textContent = ("Humidity " + cityLocal.daily[x].humidity + "%");
        }
     };
 
