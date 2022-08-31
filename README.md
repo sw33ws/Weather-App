@@ -22,7 +22,7 @@ Clone the repo onto your local drive, ```git clone git@github.com:sw33ws/jubilan
 
 First open it in vs code, then open it in the your browser, with a addon like ```open in browser, by TechER```.
 
-You can also use the finished website here [here](https://sw33ws.github.io/jubilant-memory/)
+You can also use the finished website here [here](https://sw33ws.github.io/Weather-App/)
 
 ## Contact Info
 
