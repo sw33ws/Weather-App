@@ -14,6 +14,9 @@ header h1 {
     font-weight: bold;
 }
 
+.search-section {
+    margin: 40px;
+}
 
 /*The left box */
 #Location {
@@ -28,30 +31,54 @@ header h1 {
     border: 1px solid black;
 }
 
+.weather-section {
+    overflow: hidden;
+}
+
 /*The right box */
 .info-box-main {
     border-style: solid;
-    margin-right: 40px;
-    margin-left: 40px;
+    margin-right: 20px;
+    /* margin-left: 20px; */
     padding: 10px;
 }
 
+@media only screen and (max-width: 770px) {
+    .info-box-main {
+        border-style: solid;
+        margin-right: 20px;
+        margin-left: 20px;
+        padding: 10px;
+    }
+}
+
 .five-day-forecast {
-    margin-right: 40px;
-    margin-left: 50px;
+    margin-right: 20px;
+}
+
+@media only screen and (max-width: 770px) {
+    .five-day-forecast {
+        margin-right: 20px;
+        margin-left: 20px;
+    }
 }
 
 .sub-sub-header {
     font-weight: bold;
-    margin-left: -10px;
+    /* margin-left: -10px; */
+}
+
+.card-holder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
 }
 
 .card {
     padding: 10px;
-    width: 280px;
     color:white;
-    margin-right: 40px;
-    margin-bottom: 40px;
+    object-fit: cover;
+    object-position: center;
 }
 
 
