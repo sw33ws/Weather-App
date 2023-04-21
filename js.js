@@ -43,9 +43,21 @@ function preloading() {
 };
 
 // weather info for the choosen city
-function searching() {
+
+function searchbar() {
     var searchInput = document.getElementById('search-input');
     var city = searchInput.value;
+    searching(city)
+}
+
+function sidebuttons(place) {
+    var city = place;
+    searching(city)
+}
+
+function searching(city) {
+    // var searchInput = document.getElementById('search-input');
+    // var city = searchInput.value;
     console.log(city);
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
     )
