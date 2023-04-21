@@ -77,8 +77,9 @@ function searching() {
 // actively loading
 function loadWeather() {
     const cityLocal = JSON.parse(localStorage.getItem("city2"));
+    const location = JSON.parse(localStorage.getItem("city"))
     let icon = cityLocal.current.weather[0].icon;
-    document.getElementById("Location").textContent = cityLocal.currentName;
+    document.getElementById("Location").textContent = location.name;
     document.getElementById("weatherLarge").innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@4x.png>`;
     document.getElementById("tempLarge").textContent = ("temperature " + cityLocal.current.temp + "C");
     document.getElementById("windLarge").textContent = ("wind speeds " + cityLocal.current.wind_speed + "KM/h");

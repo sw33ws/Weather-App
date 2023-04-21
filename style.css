@@ -16,7 +16,7 @@ header h1 {
 
 
 /*The left box */
-.sub-header {
+#Location {
     font-weight: bold;
 }
 
@@ -33,6 +33,7 @@ header h1 {
     border-style: solid;
     margin-right: 40px;
     margin-left: 40px;
+    padding: 10px;
 }
 
 .five-day-forecast {
