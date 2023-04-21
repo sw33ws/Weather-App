@@ -39,7 +39,6 @@ header h1 {
 .info-box-main {
     border-style: solid;
     margin-right: 20px;
-    /* margin-left: 20px; */
     padding: 10px;
 }
 
@@ -65,7 +64,6 @@ header h1 {
 
 .sub-sub-header {
     font-weight: bold;
-    /* margin-left: -10px; */
 }
 
 .card-holder {
