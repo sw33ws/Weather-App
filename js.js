@@ -12,7 +12,7 @@ function cityandtime() {
 
 // preloaded city
 function preloading() {
-    var city = "toronto";
+    var city = "Kelowna";
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
     )
     .then(function(response) {
