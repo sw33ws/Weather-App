@@ -1,7 +1,5 @@
 var cityDate = $("#cityDate");
 
-var apiKey = '44541d76d19b2706ab8b90c24f5bbf53';
-
 function cityandtime() {
     var timeNow = moment().format('dddd MMMM D YYYY'); 
     cityDate.text(timeNow);
@@ -10,74 +8,39 @@ function cityandtime() {
     }
 }
 
-// preloaded city
-function preloading() {
-    var city = "Kelowna";
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
-    )
-    .then(function(response) {
-        if (response.ok) {
-            response.json().then(function(data) {
-                console.log(data);
-                localStorage.setItem("city", JSON.stringify(data))
-                cityandtime()
-
-                const cityLocal = JSON.parse(localStorage.getItem("city"));
-                var lat = cityLocal.coord.lat;
-                var lon = cityLocal.coord.lon;
-                console.log(lat, lon);
-                fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=&exclude=alerts,minutely&appid=${apiKey}`)
-                .then(function(response2) {
-                    if (response2.ok) {
-                        response2.json().then(function(data2) {
-                            console.log(data2)
-                            localStorage.setItem("city2", JSON.stringify(data2))
-                            loadWeather()
-                            loadWeatherFive()
-                        })
-                    }
-                })
-            })
-        }
-    })
-};
-
 // weather info for the choosen city
 
 function searchbar() {
     var searchInput = document.getElementById('search-input');
     var city = searchInput.value;
-    searching(city)
+    getWeatherData(city)
 }
 
 function sidebuttons(place) {
     var city = place;
-    searching(city)
+    getWeatherData(city)
 }
 
-function searching(city) {
-    // var searchInput = document.getElementById('search-input');
-    // var city = searchInput.value;
-    console.log(city);
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=44541d76d19b2706ab8b90c24f5bbf53`
-    )
+// getting the weather data
+function getWeatherData(city) {
+    // getting the lat and long
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`)
     .then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data);
-                localStorage.setItem("city", JSON.stringify(data))
-                const cityLocal = JSON.parse(localStorage.getItem("city"));
-                var lat = cityLocal.coord.lat;
-                var lon = cityLocal.coord.lon;
-                console.log(lat, lon);
-                fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=&exclude=alerts,minutely&appid=${apiKey}`)
+                localStorage.setItem("location", JSON.stringify(data))
+                const cityLocal = JSON.parse(localStorage.getItem("location"));
+                var lat = cityLocal.results[0].latitude;
+                var lon = cityLocal.results[0].longitude;
+                // getting the weather data
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_min,precipitation_sum,wind_speed_10m_max&timezone=auto`)
                 .then(function(response2) {
                     if (response2.ok) {
-                        response2.json().then(function(data2) {
-                            console.log(data2)
-                            localStorage.setItem("city2", JSON.stringify(data2))
+                        response2.json().then(function(weatherdata) {
+                            localStorage.setItem("weather", JSON.stringify(weatherdata))
                             loadWeather()
                             loadWeatherFive()
+                            cityandtime()
                         })
                     }
                 })
@@ -88,26 +51,51 @@ function searching(city) {
 
 // actively loading
 function loadWeather() {
-    const cityLocal = JSON.parse(localStorage.getItem("city2"));
-    const location = JSON.parse(localStorage.getItem("city"))
-    let icon = cityLocal.current.weather[0].icon;
-    document.getElementById("Location").textContent = location.name;
-    document.getElementById("weatherLarge").innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@4x.png>`;
-    document.getElementById("tempLarge").textContent = ("temperature " + cityLocal.current.temp + "C");
-    document.getElementById("windLarge").textContent = ("wind speeds " + cityLocal.current.wind_speed + "KM/h");
-    document.getElementById("humidityLarge").textContent = ("Humidity " + cityLocal.current.humidity + "%");
+    const cityLocal = JSON.parse(localStorage.getItem("weather"));
+    const location = JSON.parse(localStorage.getItem("location"))
+    document.getElementById("Location").textContent = location.results[0].name;
+    let weatherCode = cityLocal.current.weather_code;
+    let Icon = weatherImage(weatherCode);
+    document.getElementById("weatherLarge").innerHTML = `<img src="${Icon}" class="currentForecastIcon">`;
+    document.getElementById("tempLarge").textContent = ("temperature: " + Math.round(cityLocal.current.temperature_2m) + "C");
+    document.getElementById("windLarge").textContent = ("wind speeds: " + Math.round(cityLocal.current.wind_speed_10m) + "KM/h");
+    document.getElementById("humidityLarge").textContent = ("Humidity: " + cityLocal.current.relative_humidity_2m + "%");
 }
 
 // five bottom displays
 function loadWeatherFive() {
-    const cityLocal = JSON.parse(localStorage.getItem("city2"));
+    const cityLocal = JSON.parse(localStorage.getItem("weather"));
     for (x = 0; x < 5 ; x++) {
-        let icon = cityLocal.daily[x].weather[0].icon;
-        document.getElementById(`${x}weather`).innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@4x.png>`;
-        document.getElementById(`${x}temp`).textContent = ("temperature " + cityLocal.daily[x].temp.day + "C");
-        document.getElementById(`${x}wind`).textContent = ("wind speeds " + cityLocal.daily[x].wind_speed + "KM/h");
-        document.getElementById(`${x}hum`).textContent = ("Humidity " + cityLocal.daily[x].humidity + "%");
-       }
-    };
+        let weatherCode = cityLocal.current.weather_code;
+        let Icon = weatherImage(weatherCode);
+        document.getElementById(`${x}weather`).innerHTML = `<img src="${Icon}" class="forecastIcon">`;
+        document.getElementById(`${x}temp`).textContent = ("temperature: " + Math.round(cityLocal.daily.temperature_2m_min[x]) + "C");
+        document.getElementById(`${x}wind`).textContent = ("wind speeds: " + Math.round(cityLocal.daily.wind_speed_10m_max[x]) + "KM/h");
+    }
+};
 
-window.onload = preloading();
+function weatherImage(weatherCode) {
+    if(weatherCode == 0) {
+        return "img/icons/sun.png"
+    }
+    if(weatherCode == 1 || weatherCode == 2 || weatherCode == 3) {
+        return "img/icons/clouds.png"
+    }
+    if(weatherCode >= 45 && weatherCode <= 48) {
+        return "img/icons/fog.png"
+    }
+    if(weatherCode >= 51 && weatherCode <= 67) {
+        return "img/icons/rain.png"
+    }
+    if(weatherCode >= 68 && weatherCode <= 79) {
+        return "img/icons/snow.png"
+    }
+    if(weatherCode >= 95 && weatherCode <= 99) {
+        return "img/icons/storm.png"
+    }
+
+    // default
+    return "img/icons/none.png"
+}
+
+window.onload = getWeatherData("Hamilton");

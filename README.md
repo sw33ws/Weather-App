@@ -2,7 +2,7 @@
 
 ## Summary
 
-This is both my challenge 6 assignment, a quick weather app that tells you the weather of any city you search up, and its up coming weather
+This is a weather app I built using the knowledge of api's I've gained over a bootcamp and college. The primary api used was openweather api, but with 2.5 closing, I switched and learned how to implement open meteo!
 
 You can vist the finished website here [here](https://sw33ws.github.io/Weather-App/)
 

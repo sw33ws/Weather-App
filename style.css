@@ -79,4 +79,10 @@ header h1 {
     object-position: center;
 }
 
+.forecastIcon {
+    width: 100px;
+}
 
+.currentForecastIcon {
+    width: 200px;
+}
